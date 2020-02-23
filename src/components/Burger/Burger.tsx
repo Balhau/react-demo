@@ -10,10 +10,12 @@ type BurgerProps={
 
 const burger : FC<BurgerProps> = (props:BurgerProps) => {
 
-    let newIngredients : any =Utils.shuffle(
+    console.log("UpdateOnIngredients: ",props.ingredients);
+
+    let newIngredients : any = Utils.shuffle(
         Object.keys(props.ingredients)
             .flatMap((ingKey : any) => {
-                return [...Array(props.ingredients[ingKey])].map((_,i) => <BurgerIngredient key={ingKey+i} type={ingKey}/>)
+                return [...Array(props.ingredients[ingKey])].map((_,i) => <BurgerIngredient key={ingKey+"_"+i} type={ingKey}/>)
             })
         );
 
