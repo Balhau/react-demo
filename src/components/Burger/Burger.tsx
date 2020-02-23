@@ -10,8 +10,6 @@ type BurgerProps={
 
 const burger : FC<BurgerProps> = (props:BurgerProps) => {
 
-    console.log("UpdateOnIngredients: ",props.ingredients);
-
     let newIngredients : any = Utils.shuffle(
         Object.keys(props.ingredients)
             .flatMap((ingKey : any) => {
@@ -19,7 +17,6 @@ const burger : FC<BurgerProps> = (props:BurgerProps) => {
             })
         );
 
-    console.log(newIngredients);
 
     if(newIngredients.length===0){
         newIngredients=<p>Please start inserting ingredients</p>;
