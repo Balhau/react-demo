@@ -1,6 +1,6 @@
 import React from 'react';
 import { FunctionComponent as FN } from 'react';
-import Aux from '../../hoc/aux';
+import {Aux} from '../../hoc';
 import classes from './Layout.module.css';
 
 const layout : FN = (props:any) => (

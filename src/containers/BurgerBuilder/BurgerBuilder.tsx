@@ -1,22 +1,24 @@
 import React, {useState} from 'react'
 import { FunctionComponent as FC } from 'react'
-import Aux from '../../hoc/aux';
+import { Aux } from '../../hoc';
 import Burger from '../../components/Burger';
 import BuildControls from '../../components/Burger/BuildControls';
 import Modal from '../../components/UI/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary';
 
 type BurgerBuilderProps = {
 
 };
 
-type Ingredient = {
+export type Ingredient = {
     [ingredients:string] : number
 };
 
-type Ingredients = {
+export type Ingredients = {
     ingredients : Ingredient
     totalPrice : number,
-    purchaseable: boolean
+    purchaseable: boolean,
+    purchasing: boolean
 };
 
 type IngredientPrices = {
@@ -43,6 +45,7 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
             },
             totalPrice : 4,
             purchaseable: false,
+            purchasing: false
         };
     }
 
@@ -64,7 +67,7 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
             
             let newPrice = oldPrice;
 
-            if(updatedCount!=oldCount){
+            if(updatedCount!==oldCount){
                 newPrice=Math.round((newPrice + INGREDIENT_PRICES[type]*inc)*10)/10;
             }
 
@@ -92,13 +95,34 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
     const removeIngredientHandler = (type : string) => {
         remIngredient(type);
     };
+
+    const purchasingUpdater = (flag:boolean) => {
+        return () => {
+            const updatedIngredients : Ingredients = {...state};
+            updatedIngredients.purchasing = flag;
+            setState(updatedIngredients);
+        }
+    }
+
+    const purchaseHandler = purchasingUpdater(true);
+    const purchaseCancelHandler = purchasingUpdater(false);
+
+
     
     return(
         <Aux>
+            <Modal
+                modelClosed={purchaseCancelHandler} 
+                show={state.purchasing}>
+                <OrderSummary
+                    ingredients={state.ingredients}
+                />
+            </Modal>
             <Burger ingredients={state.ingredients}/>
             <BuildControls
                 reset={()=>setState(getInitialState())}
                 purchaseable={state.purchaseable}
+                ordered={purchaseHandler}
                 currentPrice={state.totalPrice}
                 addIngredient={addIngredientHandler} 
                 remIngredient={removeIngredientHandler}

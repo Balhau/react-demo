@@ -7,3 +7,5 @@ const withPiroquinha = (WrappedComponent : any,piroquinha: String) =>{
         )
     }
 }
+
+export default withPiroquinha;

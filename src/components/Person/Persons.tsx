@@ -1,5 +1,5 @@
 import React, {FunctionComponent as FN} from 'react';
-import Aux from '../../hoc/aux'
+import {Aux} from '../../hoc'
 
 type Person={
     name: string,

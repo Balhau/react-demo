@@ -8,7 +8,7 @@ type BuildControlType = {
     rem: any
 };
 
-const BuildControl : FN<BuildControlType>= (props:BuildControlType) => {
+const BuildControl : FN<BuildControlType> = (props:BuildControlType) => {
 
     return (
         <div className={classes.BuildControl}>
@@ -17,5 +17,6 @@ const BuildControl : FN<BuildControlType>= (props:BuildControlType) => {
             <button onClick={props.add} className={classes.More}>More</button>
         </div>
     );
-}
+};
+
 export default BuildControl;
