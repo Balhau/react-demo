@@ -1,6 +1,6 @@
 import React, {FunctionComponent as FN} from 'react';
 import classes from './BuildControls.module.css';
-import BuildControl from './BuildControl/BuildControl';
+import BuildControl from './BuildControl';
 
 type BuildControlsType = {
     addIngredient : any,

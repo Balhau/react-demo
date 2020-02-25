@@ -1,4 +1,4 @@
-import React, { Component as C } from 'react'
+import React from 'react'
 
 const withPiroquinha = (WrappedComponent : any,piroquinha: String) =>{
     return (props : any) => {

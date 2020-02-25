@@ -2,7 +2,7 @@ import React from 'react';
 import { FC } from 'react';
 import './index.css'
 
-import Layout from './components/Layout/Layout';
+import Layout from './components/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 
 const App: FC = () => {

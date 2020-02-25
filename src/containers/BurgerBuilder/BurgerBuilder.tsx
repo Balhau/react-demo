@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 import { FunctionComponent as FC } from 'react'
 import Aux from '../../hoc/aux';
-import Burger from '../../components/Burger/Burger';
-import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Burger from '../../components/Burger';
+import BuildControls from '../../components/Burger/BuildControls';
+import Modal from '../../components/UI/Modal';
 
 type BurgerBuilderProps = {
 

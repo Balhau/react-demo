@@ -1,6 +1,6 @@
 import React from 'react';
 import {FunctionComponent as FC} from 'react';
-import BurgerIngredient from './BurgerIngredient/BurgerIngredient'
+import BurgerIngredient from './BurgerIngredient'
 import classes from './Burger.module.css';
 import Utils from '../../utils/utils';
 
