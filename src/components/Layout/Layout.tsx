@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FunctionComponent as FN } from 'react';
 import {Aux} from '../../hoc';
+import Toolbar from '../Navigation/Toolbar';
 import classes from './Layout.module.css';
+import SideDrawer from '../Navigation/SideDrawer';
 
-const layout : FN = (props:any) => (
+const Layout : FN = (props:any) => {
+
+    const [visibleDrawer,setVisibleDrawer]=useState<boolean>(false)
+
+    const sideDrawerClosedHandler = () => setVisibleDrawer(false);
+
+    const sideDrawerToggleHandler = () => setVisibleDrawer(!visibleDrawer);
+
+    return (
     <Aux>
-        <div>Toolbar, SideBar, BackDrop</div>
+        <Toolbar clicked={sideDrawerToggleHandler}/>
+        <SideDrawer clicked={sideDrawerClosedHandler} show={visibleDrawer}/>
         <main className={classes.Content}>
             {props.children}
         </main>
     </Aux>
-)
+);}
 
-export default layout;
+export default Layout;

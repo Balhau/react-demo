@@ -1,9 +1,13 @@
 import React from 'react';
 import {Aux} from '../../../hoc';
-import { Ingredient }  from '../../../containers/BurgerBuilder/BurgerBuilder';
+import { Ingredient }  from '../../../containers/BurgerBuilder';
+import Button from '../../UI/Button';
 
 type OrderSummaryType = {
-    ingredients : Ingredient
+    ingredients : Ingredient,
+    cancelOrder : ()=> void,
+    proceedOrder : ()=> void,
+    price: number
 };
 
 const orderSummary = (props:OrderSummaryType) => {
@@ -18,12 +22,14 @@ const orderSummary = (props:OrderSummaryType) => {
 
     return (
         <Aux>
-            <p>Your order</p>
+            <p><strong>Your order</strong></p>
             <p>A delicious burger with the following ingredients:</p>
             <ul>
                 {ingredientSummary}
             </ul>
-            <p>Continue to checkout</p>
+            <p><strong>Total Price: {props.price}</strong></p>
+            <Button clicked={props.cancelOrder} btnType="Danger">Cancel</Button>
+            <Button clicked={props.proceedOrder} btnType="Success">Order</Button>
         </Aux>
     )
 };

@@ -104,6 +104,10 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
         }
     }
 
+    const proceedOrder = () => {
+        console.log("Proceeding with the order")
+    }
+
     const purchaseHandler = purchasingUpdater(true);
     const purchaseCancelHandler = purchasingUpdater(false);
 
@@ -115,6 +119,9 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
                 modelClosed={purchaseCancelHandler} 
                 show={state.purchasing}>
                 <OrderSummary
+                    price={state.totalPrice}
+                    cancelOrder={purchaseCancelHandler}
+                    proceedOrder={proceedOrder}
                     ingredients={state.ingredients}
                 />
             </Modal>

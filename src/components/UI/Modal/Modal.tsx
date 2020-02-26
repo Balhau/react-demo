@@ -13,7 +13,7 @@ const modal = (props:ModalPropType) => {
     const classStatus = props.show ? classes.Show : classes.Hide;
     return(<Aux>
             <Backdrop clicked={props.modelClosed} show={props.show}/>
-            <div className={`${classes.Modal} ${classStatus}`}>
+            <div className={ [classes.Modal, classStatus].join(" ") }>
                 {props.children}
             </div>
         </Aux>
