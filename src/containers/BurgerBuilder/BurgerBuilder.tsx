@@ -5,6 +5,8 @@ import Burger from '../../components/Burger';
 import BuildControls from '../../components/Burger/BuildControls';
 import Modal from '../../components/UI/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary';
+import axios from '../../utils/axios-orders';
+import Spinner from '../../components/UI/Spinner';
 
 type BurgerBuilderProps = {
 
@@ -18,7 +20,8 @@ export type Ingredients = {
     ingredients : Ingredient
     totalPrice : number,
     purchaseable: boolean,
-    purchasing: boolean
+    purchasing: boolean,
+    loading: boolean
 };
 
 type IngredientPrices = {
@@ -45,7 +48,8 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
             },
             totalPrice : 4,
             purchaseable: false,
-            purchasing: false
+            purchasing: false,
+            loading: false
         };
     }
 
@@ -105,12 +109,48 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
     }
 
     const proceedOrder = () => {
-        console.log("Proceeding with the order")
+
+        const postingIngredients : Ingredients = {
+            ...state
+        };
+        postingIngredients.loading=true;
+        setState(postingIngredients);
+
+        const postData = {
+            ingredients : state.ingredients,
+            totalPrice: state.totalPrice,
+            customer: {
+                name: "Buceta Gostosa",
+                address: {
+                    street: "La Cona del Madre",
+                    zipCode: "696969",
+                    country: "Bucetings"
+                },
+                email: "buceta@buceta.pila",
+                deliveryMethod: "penetration"
+            }
+        }
+        axios.post("/orders.json",postData)
+            .then(response =>{
+                const loadedIngredients : Ingredients = {
+                    ...postingIngredients
+                };
+                loadedIngredients.loading=false;
+                setState(loadedIngredients);
+            });
     }
 
     const purchaseHandler = purchasingUpdater(true);
     const purchaseCancelHandler = purchasingUpdater(false);
 
+    const orderSummary = state.loading 
+        ? <Spinner/>
+        : <OrderSummary
+            price={state.totalPrice}
+            cancelOrder={purchaseCancelHandler}
+            proceedOrder={proceedOrder}
+            ingredients={state.ingredients}
+        />
 
     
     return(
@@ -118,12 +158,7 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
             <Modal
                 modelClosed={purchaseCancelHandler} 
                 show={state.purchasing}>
-                <OrderSummary
-                    price={state.totalPrice}
-                    cancelOrder={purchaseCancelHandler}
-                    proceedOrder={proceedOrder}
-                    ingredients={state.ingredients}
-                />
+                    {orderSummary}
             </Modal>
             <Burger ingredients={state.ingredients}/>
             <BuildControls

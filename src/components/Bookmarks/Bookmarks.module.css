@@ -1,0 +1,11 @@
+.Bookmarks {
+    width: 96%;
+    margin: 1%;
+    padding: 1%;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: flex-start;
+    background-color: lightslategray;
+    justify-content: space-around;
+    border-radius: 10px;
+}

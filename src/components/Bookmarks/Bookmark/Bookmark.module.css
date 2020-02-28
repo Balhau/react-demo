@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+.Bookmark{
+    width: 75%;
+    height: 250px;
+    margin: 10px 5px;
+    padding: 10px;
+    display: inline-table;
+    overflow: scroll;
+    font-family: 'Roboto';
+    font-size: 10pt;
+    background-color: rgb(216, 232, 228);
+    border-radius: 4px;
+}
+
+.Bookmark:hover {
+    background-color: rgb(197, 218, 228);
+}
