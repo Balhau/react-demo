@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import { FunctionComponent as FC } from 'react'
 import { Aux } from '../../hoc';
 import Burger from '../../components/Burger';
@@ -7,21 +7,19 @@ import Modal from '../../components/UI/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary';
 import axios from '../../utils/axios-orders';
 import Spinner from '../../components/UI/Spinner';
+import { withErrorHandler } from '../../hoc';
 
 type BurgerBuilderProps = {
 
 };
 
-export type Ingredient = {
-    [ingredients:string] : number
-};
-
 export type Ingredients = {
-    ingredients : Ingredient
+    ingredients: any,
     totalPrice : number,
     purchaseable: boolean,
     purchasing: boolean,
-    loading: boolean
+    loading: boolean,
+    error: boolean,
 };
 
 type IngredientPrices = {
@@ -36,22 +34,38 @@ const INGREDIENT_PRICES : IngredientPrices = {
 }
 
 
-const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
+const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps | any) => {
 
     const getInitialState = () => {
         return {
-            ingredients : {
-                salad: 0,
-                bacon: 0,
-                cheese: 0,
-                meat: 0
-            },
+            ingredients : null,
             totalPrice : 4,
             purchaseable: false,
             purchasing: false,
-            loading: false
+            loading: false,
+            error:false
         };
     }
+
+    const computePrice = (ingredients:any) => {
+        return Object.keys(ingredients).map(
+            ing => ingredients[ing]
+        ).reduce((sum,el)=> sum+el,0);
+    }
+
+    useEffect(()=>{
+        const oldState = state;
+        axios.get("/ingredients.json")
+        .then((response:any)=>{
+            const ingredients = response.data ? response.data : {}; 
+            const newPrice  = 4 + computePrice(ingredients);
+            setState({...oldState,
+                ingredients:response.data,
+                totalPrice: newPrice
+            });
+        })
+        .catch(err => setState({...state,error:true}));
+    },[])
 
     const initialIngredients : Ingredients = getInitialState();
 
@@ -67,7 +81,8 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
 
             updatedCount = updatedCount>0 ? updatedCount : 0;
             
-            const updatedIngredients : Ingredients = {...state};
+            const updatedIngredientsState : Ingredients = {...state};
+            const updatedIngredients = updatedIngredientsState.ingredients;
             
             let newPrice = oldPrice;
 
@@ -75,17 +90,15 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
                 newPrice=Math.round((newPrice + INGREDIENT_PRICES[type]*inc)*10)/10;
             }
 
+            updatedIngredients[type]=updatedCount;
 
-            updatedIngredients.ingredients[type]=updatedCount;
-            updatedIngredients.totalPrice=newPrice;
+            updatedIngredientsState.totalPrice=newPrice;
             
-            const sum = Object.keys(updatedIngredients.ingredients).map(
-                ing => updatedIngredients.ingredients[ing]
-            ).reduce((sum,el)=> sum+el,0);
+            const sum = computePrice(updatedIngredients);
 
-            updatedIngredients.purchaseable=sum>0?true:false;
+            updatedIngredientsState.purchaseable=sum>0?true:false;
 
-            setState(updatedIngredients);
+            setState(updatedIngredientsState);
         };
     }
 
@@ -116,8 +129,8 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
         postingIngredients.loading=true;
         setState(postingIngredients);
 
-        const postData = {
-            ingredients : state.ingredients,
+        /*const postData = {
+           ingredients : state.ingredients,
             totalPrice: state.totalPrice,
             customer: {
                 name: "Buceta Gostosa",
@@ -138,12 +151,15 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
                 loadedIngredients.loading=false;
                 setState(loadedIngredients);
             });
+            */
+
+           props.history.push("/checkout");
     }
 
     const purchaseHandler = purchasingUpdater(true);
     const purchaseCancelHandler = purchasingUpdater(false);
 
-    const orderSummary = state.loading 
+    const orderSummary = state.loading || !state.ingredients
         ? <Spinner/>
         : <OrderSummary
             price={state.totalPrice}
@@ -152,7 +168,31 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
             ingredients={state.ingredients}
         />
 
-    
+        const resetBurger = ()=> {
+            const newState = {...state,totalPrice: 4};
+            Object.keys(newState.ingredients)
+                .map(key => newState.ingredients[key]=0)
+            setState(newState);
+        };
+
+        let burger = state.error ? <p>Error loading ingredients</p> : <Spinner />;
+
+        if(state.ingredients){
+         burger = (
+            <Aux>
+            <Burger ingredients={state.ingredients}/>
+                <BuildControls
+                    reset={resetBurger}
+                    purchaseable={state.purchaseable}
+                    ordered={purchaseHandler}
+                    currentPrice={state.totalPrice}
+                    addIngredient={addIngredientHandler} 
+                    remIngredient={removeIngredientHandler}
+                />
+            </Aux>
+            );
+        }
+        
     return(
         <Aux>
             <Modal
@@ -160,17 +200,10 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps) => {
                 show={state.purchasing}>
                     {orderSummary}
             </Modal>
-            <Burger ingredients={state.ingredients}/>
-            <BuildControls
-                reset={()=>setState(getInitialState())}
-                purchaseable={state.purchaseable}
-                ordered={purchaseHandler}
-                currentPrice={state.totalPrice}
-                addIngredient={addIngredientHandler} 
-                remIngredient={removeIngredientHandler}
-            />
+            {burger}
         </Aux>
     );
 };
 
-export default BurgerBuilder;
+
+export default withErrorHandler(BurgerBuilder,axios);

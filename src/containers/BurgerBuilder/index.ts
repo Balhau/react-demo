@@ -1,5 +1,5 @@
-import BuggerBuilder from './BurgerBuilder';
-import {Ingredients as ingredients, Ingredient as ingredient} from './BurgerBuilder';
+import  BurgerBuilder from './BurgerBuilder';
+import {Ingredients as ingredients} from './BurgerBuilder';
 
-export type Ingredient=ingredient;
 export type Ingredients=ingredients;
+export default BurgerBuilder;

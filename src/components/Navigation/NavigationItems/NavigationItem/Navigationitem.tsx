@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './NavigationItem.module.css';
+import {Link} from 'react-router-dom'
 
 type NavigationItemProps = {
     link: string,
@@ -16,9 +17,7 @@ const navigationItem = (props:NavigationItemProps) => {
                             
     return (
         <li className={classes.NavigationItem}>
-            <a 
-                className={activeClass} 
-                href={props.link}>{props.children}</a>
+            <Link className={activeClass} to={props.link}>{props.children}</Link>
         </li>
     )
 }

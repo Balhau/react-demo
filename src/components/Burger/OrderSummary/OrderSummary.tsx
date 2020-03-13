@@ -1,10 +1,9 @@
 import React from 'react';
 import {Aux} from '../../../hoc';
-import { Ingredient }  from '../../../containers/BurgerBuilder';
 import Button from '../../UI/Button';
 
 type OrderSummaryType = {
-    ingredients : Ingredient,
+    ingredients : any ,
     cancelOrder : ()=> void,
     proceedOrder : ()=> void,
     price: number
