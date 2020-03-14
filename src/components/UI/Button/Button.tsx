@@ -3,7 +3,7 @@ import classes from './Button.module.css';
 
 type ButtonTypes = {
     btnType:string,
-    clicked: () => void
+    clicked: (() => void) | ((event:any) => void)
     children: any
 }
 

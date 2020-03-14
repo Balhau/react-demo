@@ -9,8 +9,9 @@ const CheckoutSummary = (props: any) => {
         props.history.push("/checkout-order");
     };
     const handleCancel = ()=>{
-        props.history.push("/");
+        props.history.goBack();
     };
+
     return (
         <div className={classes.CheckoutSummary}>
             <h1>We hope it tasts well</h1> 

@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './NavigationItem.module.css';
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 type NavigationItemProps = {
     link: string,
@@ -8,16 +8,14 @@ type NavigationItemProps = {
     children?: any
 }
 
-const navigationItem = (props:NavigationItemProps) => {
-    
-    const activeValue=props.active?.valueOf();
-    const activeClass : any = activeValue 
-                            ? classes.active 
-                            : null;
-                            
+const navigationItem = (props:NavigationItemProps) => {                         
     return (
         <li className={classes.NavigationItem}>
-            <Link className={activeClass} to={props.link}>{props.children}</Link>
+            <NavLink 
+                activeClassName={classes.active} 
+                exact
+                to={props.link}>{props.children}
+            </NavLink>
         </li>
     )
 }

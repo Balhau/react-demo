@@ -129,31 +129,23 @@ const BurgerBuilder : FC<BurgerBuilderProps> = (props : BurgerBuilderProps | any
         postingIngredients.loading=true;
         setState(postingIngredients);
 
-        /*const postData = {
-           ingredients : state.ingredients,
-            totalPrice: state.totalPrice,
-            customer: {
-                name: "Buceta Gostosa",
-                address: {
-                    street: "La Cona del Madre",
-                    zipCode: "696969",
-                    country: "Bucetings"
-                },
-                email: "buceta@buceta.pila",
-                deliveryMethod: "penetration"
-            }
-        }
-        axios.post("/orders.json",postData)
-            .then(response =>{
-                const loadedIngredients : Ingredients = {
-                    ...postingIngredients
-                };
-                loadedIngredients.loading=false;
-                setState(loadedIngredients);
-            });
-            */
+            const queryParams = [];
 
-           props.history.push("/checkout");
+            for(const ing in state.ingredients){
+                queryParams.push(encodeURIComponent(ing)+"="+encodeURIComponent(state.ingredients[ing]));
+            }
+
+            queryParams.push("totalPrice="+state.totalPrice);
+
+            const queryString = queryParams.join("&");
+
+            const redirect = {
+                pathname: "/checkout",
+                search: "?"+queryString
+            };
+
+           props.history.push(redirect);
+
     }
 
     const purchaseHandler = purchasingUpdater(true);
