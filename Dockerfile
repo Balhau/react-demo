@@ -10,14 +10,11 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install and cache app dependencies
 COPY . /app
 #Install front end
-RUN npm install --silent
+RUN npm install
 RUN yarn build
 
-##Copy front end to express server and start the server
-
-RUN rm -rf server/build && cp -R build server/
-
-WORKDIR /app/server
+#Add server
+RUN yarn global add serve
 
 # start app
-CMD ["npm", "start"]
+CMD ["serve", "-s", "build"]
