@@ -14,20 +14,29 @@ const Orders = (props:any) => {
         () => {
             axios.get("/orders.json")
             .then(response => {
-                const keys = Object.keys(response.data);
-                const orderList = keys.map((key)=> response.data[key]);
+                if(response.data){
+                    const keys = Object.keys(response.data);
+                    const orderList = keys.map((key)=> response.data[key]);
 
-                setState({
-                    loading: false,
-                    orders: orderList
-                });
+                    setState({
+                        loading: false,
+                        orders: orderList
+                    });
+                }else{
+                    setState({
+                        loading: false,
+                        orders: null
+                    });
+                }
             });
         },[])
 
     let order_list = (<Spinner />);
 
     if(!state.loading){
-        order_list=state.orders.map((order:any) => <Order order={order}/>)
+        order_list=state.orders != null
+            ? state.orders.map((order:any) => <Order order={order}/>)
+            : null;
     }
 
     return (

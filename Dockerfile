@@ -1,5 +1,5 @@
 # base image
-FROM node:12.2.0-alpine
+FROM node:12.2.0-alpine as builder
 
 # set working directory
 WORKDIR /app
@@ -12,6 +12,12 @@ COPY . /app
 #Install front end
 RUN npm install
 RUN yarn build
+
+FROM node:12.2.0-alpine
+
+copy --from=builder /app/build /app
+
+WORKDIR /app
 
 #Add server
 RUN yarn global add serve

@@ -1,39 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, isValidElement } from 'react';
 import Button from '../../UI/Button';
 import {withRouter} from 'react-router-dom';
 import classes from './ContactData.module.css';
 import axios from '../../../utils/axios-orders';
 import Spinner from '../../UI/Spinner';
+import Input from '../../UI/Input';
+import {orderForm as formData, validateInput} from './orderForm';
+
 
 const ContactData = (props:any) => {
     const [state,setState] = useState({
         loading: false,
         ingredients: props.ingredients,
         price: props.price,
-        name:'',
-        email:'',
-        address:{
-            street: '',
-            postalCode: ''
-        },
-    });
+        orderForm: formData
+    }); 
 
-    const orderBurger = (event:Event) => {
+    const inputChangeHandler = (event:any,inputIdentifier:any) => {
+        const oldState = state;
+        const orderFormNew:any=oldState.orderForm;
+        const formEntry=orderFormNew[inputIdentifier];
+        formEntry.value=event.target.value;
+        formEntry.valid=validateInput(event.target.value,formEntry.validation);
+        setState({...oldState,orderForm:orderFormNew})
+
+    }
+
+    const orderBurger = (event:any) => {
         event.preventDefault();
         setState({...state,loading:true})
+        const formData:any={};
+
+        Object.keys(state.orderForm).forEach((key:any)=>{
+            formData[key]=state.orderForm[key];
+        });
+
         const postData = {
-            ingredients : state.ingredients,
+             ingredients : state.ingredients,
              totalPrice: state.price,
-             customer: {
-                 name: "Buceta Gostosa",
-                 address: {
-                     street: "La Cona del Madre",
-                     zipCode: "696969",
-                     country: "Bucetings"
-                 },
-                 email: "buceta@buceta.pila",
-                 deliveryMethod: "penetration"
-             }
+             formData: formData
          }
 
          axios.post("/orders.json",postData)
@@ -47,13 +52,22 @@ const ContactData = (props:any) => {
     if(state.loading){
         form = <Spinner />
     }else {
+        const frm:any=state.orderForm;
+        const inputs = Object.keys(frm)
+            .map((key:string)=>(
+                <Input
+                    key={key}
+                    changed={(event:any)=>inputChangeHandler(event,key)}
+                    elementtype={frm[key]["inputType"]}
+                    elementconfig={{...(frm[key]["elementConfig"])}}
+                    valid={frm[key]["valid"]}
+                    value={frm[key].value}
+                />
+            ));
         form =(
-            <form>
-                    <input className={classes.Input} type="text" name="name" placeholder="Your name" />
-                    <input className={classes.Input} type="text" name="email" placeholder="Your email" />
-                    <input className={classes.Input} type="text" name="street" placeholder="Your street" />
-                    <input className={classes.Input} type="text" name="postalCode" placeholder="Your postal code" />
-                    <Button clicked={orderBurger} btnType="Success">ORDER</Button>
+            <form onSubmit={orderBurger}>
+                    {inputs}
+                    <Button btnType="Success">ORDER</Button>
             </form>
         );
     }
