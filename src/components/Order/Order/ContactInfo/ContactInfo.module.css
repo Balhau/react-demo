@@ -1,0 +1,14 @@
+.Label {
+    color: darkolivegreen;
+    text-transform: uppercase;
+}
+
+.Span {
+    margin-bottom: 1%;
+}
+
+.ContactInfo {
+  margin: 2% 0;
+  padding: 2% 2%;
+  background-color: rgba(200,200,200,0.2);
+}

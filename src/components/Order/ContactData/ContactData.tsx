@@ -13,7 +13,8 @@ const ContactData = (props:any) => {
         loading: false,
         ingredients: props.ingredients,
         price: props.price,
-        orderForm: formData
+        orderForm: formData,
+        submitable: false
     }); 
 
     const inputChangeHandler = (event:any,inputIdentifier:any) => {
@@ -22,7 +23,9 @@ const ContactData = (props:any) => {
         const formEntry=orderFormNew[inputIdentifier];
         formEntry.value=event.target.value;
         formEntry.valid=validateInput(event.target.value,formEntry.validation);
-        setState({...oldState,orderForm:orderFormNew})
+        let submitable=true;
+        Object.keys(orderFormNew).forEach((key:any)=>submitable=submitable && orderFormNew[key].valid);
+        setState({...oldState,orderForm:orderFormNew,submitable:submitable})
 
     }
 
@@ -47,6 +50,8 @@ const ContactData = (props:any) => {
              });
     }
 
+    console.log(state);
+
     let form = null;
 
     if(state.loading){
@@ -67,7 +72,7 @@ const ContactData = (props:any) => {
         form =(
             <form onSubmit={orderBurger}>
                     {inputs}
-                    <Button btnType="Success">ORDER</Button>
+                    <Button disabled={!state.submitable} btnType="Success">ORDER</Button>
             </form>
         );
     }

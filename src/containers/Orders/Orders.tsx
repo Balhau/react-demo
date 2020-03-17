@@ -16,7 +16,7 @@ const Orders = (props:any) => {
             .then(response => {
                 if(response.data){
                     const keys = Object.keys(response.data);
-                    const orderList = keys.map((key)=> response.data[key]);
+                    const orderList = keys.map((key:any)=> ({...response.data[key],key:key}));
 
                     setState({
                         loading: false,
@@ -35,7 +35,7 @@ const Orders = (props:any) => {
 
     if(!state.loading){
         order_list=state.orders != null
-            ? state.orders.map((order:any) => <Order order={order}/>)
+            ? state.orders.map((order:any) => <Order key={order.key} order={order}/>)
             : null;
     }
 

@@ -15,6 +15,10 @@
     color: #5C9210;
 }
 
+.Disabled {
+    color: #ccc;
+}
+
 .Danger {
     color: #944317;
 }

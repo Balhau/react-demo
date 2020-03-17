@@ -77,7 +77,7 @@ export const orderForm : any = {
         },
         valid:true
     }
-}
+};
 
 export const validateInput = (value:any,rules:any)=>{
     let isValid=true
