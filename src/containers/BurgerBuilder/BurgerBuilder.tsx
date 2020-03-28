@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState} from 'react'
 import { FunctionComponent as FC } from 'react'
 import { Aux } from '../../hoc';
 import Burger from '../../components/Burger';
@@ -75,7 +75,6 @@ const BurgerBuilder : FC<any> = (props: any) => {
         return sumArray.reduce(reduceNumbers,initialValue)>0;
     }
 
-    console.log(state.loading);
     const orderSummary = state.loading || !props.ings
         ? <Spinner/>
         : <OrderSummary

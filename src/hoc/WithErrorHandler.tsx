@@ -5,8 +5,9 @@ import Modal from '../components/UI/Modal';
 const withErrorHandler = (WrappedComponent:FN,axios:any) => 
     (props:any) => {
 
-        const [reqPointer,setReqPointer]:any = useState(null);
-        const [resPointer,setResPointer]:any = useState(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const [reqPointer,setReqPointer] :any = useState(null);
+        const [resPointer,setResPointer] :any = useState(null);
 
         const [error,setError]=useState<any>();
 
@@ -30,10 +31,12 @@ const withErrorHandler = (WrappedComponent:FN,axios:any) =>
             //Equivalent to componentWillUnmount
         return () => {
             console.log("Component will unmount");
+            // eslint-disable-next-line
             axios.interceptors.request.eject(reqPointer);
+            // eslint-disable-next-line
             axios.interceptors.request.eject(resPointer);
-        };
-        }, []);
+            // eslint-disable-next-line
+        };}, []);
 
         const wrapped = (<WrappedComponent {...props}/>);
 

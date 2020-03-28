@@ -58,11 +58,11 @@ export const reducer : Reducer<any,any> = (state=initialState,action:any) => {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
-                    [action.ingredientName]: roundPrice(state.ingredients[action.ingredientName] == 0 
+                    [action.ingredientName]: roundPrice(state.ingredients[action.ingredientName] === 0 
                         ? state.ingredients[action.ingredientName] 
                         : state.ingredients[action.ingredientName] - 1)
                 },
-                totalPrice : roundPrice(state.ingredients[action.ingredientName] == 0 
+                totalPrice : roundPrice(state.ingredients[action.ingredientName] === 0 
                     ? state.totalPrice
                     : state.totalPrice-INGREDIENT_PRICES[action.ingredientName])
             };

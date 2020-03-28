@@ -1,6 +1,5 @@
 import React from 'react';
 import classes from './Input.module.css';
-import Aux from '../../../hoc/aux';
 
 const Input = (props:any) => {
 

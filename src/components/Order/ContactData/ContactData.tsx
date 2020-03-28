@@ -1,4 +1,4 @@
-import React, { useState, isValidElement } from 'react';
+import React, { useState } from 'react';
 import Button from '../../UI/Button';
 import {withRouter} from 'react-router-dom';
 import classes from './ContactData.module.css';
