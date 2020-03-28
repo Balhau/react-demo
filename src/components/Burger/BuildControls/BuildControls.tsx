@@ -7,7 +7,7 @@ type BuildControlsType = {
     remIngredient : (type:string)=>void,
     ordered: () => void,
     currentPrice : number,
-    purchaseable: boolean,
+    purchaseable:() => boolean,
     reset:any
 }
 
@@ -36,7 +36,7 @@ const BuildControls : FN<BuildControlsType> = (props:BuildControlsType) => {
                     }
                 )}
                 <button onClick={props.reset} className={classes.ResetButton}>Reset</button>
-                <button onClick={props.ordered} className={classes.OrderButton} disabled={!props.purchaseable}>ORDER NOW</button>
+                <button onClick={props.ordered} className={classes.OrderButton} disabled={!props.purchaseable()}>ORDER NOW</button>
             </div>
     )
 };
