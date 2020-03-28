@@ -59,30 +59,7 @@ const BurgerBuilder : FC<any> = (props: any) => {
     }
 
     const proceedOrder = () => {
-
-        const postingIngredients : Ingredients = {
-            ...state
-        };
-        postingIngredients.loading=true;
-        setState(postingIngredients);
-
-            const queryParams = [];
-
-            for(const ing in props.ings){
-                queryParams.push(encodeURIComponent(ing)+"="+encodeURIComponent(props.ings[ing]));
-            }
-
-            queryParams.push("totalPrice="+props.price);
-
-            const queryString = queryParams.join("&");
-
-            const redirect = {
-                pathname: "/checkout",
-                search: "?"+queryString
-            };
-
-           props.history.push(redirect);
-
+        props.history.push("/checkout");
     }
 
     const purchaseHandler = purchasingUpdater(true);
@@ -107,14 +84,6 @@ const BurgerBuilder : FC<any> = (props: any) => {
             proceedOrder={proceedOrder}
             ingredients={props.ings}
         />
-
-        const resetBurger = ()=> {/** 
-            const newState = {...state,totalPrice: 4};
-            Object.keys(newState.ingredients)
-                .map(key => newState.ingredients[key]=0)
-            setState(newState);
-            */
-        };
 
         let burger = state.error ? <p>Error loading ingredients</p> : <Spinner />;
 

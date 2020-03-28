@@ -2,16 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore , applyMiddleware } from 'redux';
 
 import './index.css';
 import App from './App';
-import reducer from './store/reducer';
-import {initialState as reducerInitial} from './store/reducer';
-
+import { reducer, persistLocalStoreMiddleware} from './store/reducer';
+//import {initialState as reducerInitial} from './store/reducer';
 import * as serviceWorker from './serviceWorker';
+  
 
-const store = createStore(reducer);
+const store = createStore(reducer,applyMiddleware(persistLocalStoreMiddleware));
 
 const reactApp = (
     <Provider store={store}>

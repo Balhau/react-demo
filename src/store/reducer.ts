@@ -14,19 +14,39 @@ type IngredientPrices = {
 
 const roundPrice = (price:number) => Math.round((price)*10)/10;
 
+const REDUX_LOCAL_STORAGE="burger-builder-storage";
 
-export const initialState = {
+export const persistLocalStoreMiddleware = ({ getState } : any) => 
+     (next:any) => (action:any) => {
+        console.log('will dispatch', action)
+    
+        // Call the next dispatch method in the middleware chain.
+        const returnValue = next(action)
+    
+        console.log('state after dispatch', getState())
+        localStorage.setItem(REDUX_LOCAL_STORAGE, JSON.stringify(getState()));
+    
+        // This will likely be the action itself, unless
+        // a middleware further in chain changed it.
+        return returnValue
+    };
+  
+
+const emptyState= { 
     ingredients: {
         salad:0,
         cheese:0,
         bacon:0,
         meat:0
     },
-    totalPrice:4   
+    totalPrice:4 
 };
+const initialState = localStorage.getItem(REDUX_LOCAL_STORAGE) != null 
+        ? JSON.parse(localStorage.getItem(REDUX_LOCAL_STORAGE) || "{}") 
+        : emptyState;  
 
-const reducer : Reducer<any,any> = (state=initialState,action:any) => {
-    let newState:any;
+
+export const reducer : Reducer<any,any> = (state=initialState,action:any) => {
     switch(action.type){
         case actionTypes.ADD_INGREDIENT:
             return {
@@ -38,7 +58,7 @@ const reducer : Reducer<any,any> = (state=initialState,action:any) => {
                 totalPrice: roundPrice(state.totalPrice + INGREDIENT_PRICES[action.ingredientName])
             };
         case actionTypes.REMOVE_INGREDIENT:
-            return  {
+            return {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
@@ -51,10 +71,8 @@ const reducer : Reducer<any,any> = (state=initialState,action:any) => {
                     : state.totalPrice-INGREDIENT_PRICES[action.ingredientName])
             };
         case actionTypes.RESET_INGREDIENTS:
-                return initialState;
+                return emptyState;
         default:
             return state;
     }
-}
-
-export default reducer;
+};
