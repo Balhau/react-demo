@@ -16,18 +16,14 @@ const roundPrice = (price:number) => Math.round((price)*10)/10;
 
 const REDUX_LOCAL_STORAGE="burger-builder-storage";
 
+/**
+ * Middleware to store storage in browser localStorage
+ * @param param0 
+ */
 export const persistLocalStoreMiddleware = ({ getState } : any) => 
      (next:any) => (action:any) => {
-        console.log('will dispatch', action)
-    
-        // Call the next dispatch method in the middleware chain.
-        const returnValue = next(action)
-    
-        console.log('state after dispatch', getState())
+        const returnValue = next(action)    
         localStorage.setItem(REDUX_LOCAL_STORAGE, JSON.stringify(getState()));
-    
-        // This will likely be the action itself, unless
-        // a middleware further in chain changed it.
         return returnValue
     };
   

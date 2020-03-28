@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 import CheckoutSummary from '../../components/Order/CheckoutSummary';
 import ContactData from '../../components/Order/ContactData';
@@ -30,8 +30,4 @@ const mapStateToProps = (state:any) => ({
     price : state.totalPrice
 });
 
-const mapDispatchToProps = (dispatch:any) => ({
-
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
+export default connect(mapStateToProps)(Checkout);
