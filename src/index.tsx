@@ -2,16 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore , applyMiddleware } from 'redux';
+import { createStore , applyMiddleware, compose } from 'redux';
 
 import './index.css';
 import App from './App';
 import { reducer, persistLocalStoreMiddleware} from './store/reducer';
 //import {initialState as reducerInitial} from './store/reducer';
 import * as serviceWorker from './serviceWorker';
-  
 
-const store = createStore(reducer,applyMiddleware(persistLocalStoreMiddleware));
+const composeEnhancers :any = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ 
+        ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+        : compose;
+
+const store = createStore(reducer,composeEnhancers(
+        applyMiddleware(persistLocalStoreMiddleware)
+    )
+);
 
 const reactApp = (
     <Provider store={store}>

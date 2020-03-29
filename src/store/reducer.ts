@@ -20,10 +20,10 @@ const REDUX_LOCAL_STORAGE="burger-builder-storage";
  * Middleware to store storage in browser localStorage
  * @param param0 
  */
-export const persistLocalStoreMiddleware = ({ getState } : any) => 
+export const persistLocalStoreMiddleware = (store : any) => 
      (next:any) => (action:any) => {
         const returnValue = next(action)    
-        localStorage.setItem(REDUX_LOCAL_STORAGE, JSON.stringify(getState()));
+        localStorage.setItem(REDUX_LOCAL_STORAGE, JSON.stringify(store.getState()));
         return returnValue
     };
   
