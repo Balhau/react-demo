@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 
 import './index.css';
 import App from './App';
-import { reducer, persistLocalStoreMiddleware } from './store/reducer';
+import { reducer, persistLocalStoreMiddleware } from './store/reducers/reducer';
 import thunk from 'redux-thunk'
 
 

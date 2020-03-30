@@ -9,7 +9,7 @@ import axios from '../../utils/axios-orders';
 import Spinner from '../../components/UI/Spinner';
 import { withErrorHandler } from '../../hoc';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions/actions';
+import * as actionTypes from '../../store/actions';
 
 
 export type Ingredients = {
