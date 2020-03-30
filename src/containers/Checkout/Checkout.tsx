@@ -2,14 +2,14 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import CheckoutSummary from '../../components/Order/CheckoutSummary';
 import ContactData from '../../components/Order/ContactData';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-const Checkout = (props:any) => {
+const Checkout = (props: any) => {
 
     const contactData = () => {
-         return (
-            <ContactData 
-                ingredients={props.ingredients} 
+        return (
+            <ContactData
+                ingredients={props.ingredients}
                 price={props.price}
             />
         )
@@ -17,7 +17,7 @@ const Checkout = (props:any) => {
 
     return (
         <div>
-            <CheckoutSummary 
+            <CheckoutSummary
                 ingredients={props.ingredients}
             />
             <Route path={"/checkout-order"} render={contactData} />
@@ -25,9 +25,9 @@ const Checkout = (props:any) => {
     );
 };
 
-const mapStateToProps = (state:any) => ({
-    ingredients : state.ingredients,
-    price : state.totalPrice
+const mapStateToProps = (state: any) => ({
+    ingredients: state.ingredients,
+    price: state.totalPrice
 });
 
 export default connect(mapStateToProps)(Checkout);
